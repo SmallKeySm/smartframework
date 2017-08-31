@@ -71,6 +71,7 @@ public class ClassUtil {
                                 String jarEntryName = jarEntry.getName();
                                 if (jarEntryName.endsWith(".class")){
                                     String className = jarEntryName.substring(0, jarEntryName.lastIndexOf(".")).replaceAll("/", ".");
+                                    doLoadClass(classSet, className);
                                 } else {
 
                                 }
