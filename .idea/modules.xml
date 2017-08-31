@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/smartcore/smartcore.iml" filepath="$PROJECT_DIR$/smartcore/smartcore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/smartframework.iml" filepath="$PROJECT_DIR$/smartframework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/smartweb/smartweb.iml" filepath="$PROJECT_DIR$/smartweb/smartweb.iml" />
+    </modules>
+  </component>
+</project>
