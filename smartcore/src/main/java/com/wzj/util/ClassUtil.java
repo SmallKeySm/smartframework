@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.net.JarURLConnection;
 import java.net.URL;
 import java.util.Enumeration;
@@ -119,5 +120,24 @@ public class ClassUtil {
     private static void doLoadClass(Set<Class<?>> classSet, String className) {
         Class<?> aClass = loadClass(className, false);
         classSet.add(aClass);
+    }
+
+    /**
+     * 根据指定的注解获取类
+     *
+     * @param classSet
+     * @param aClass
+     * @return
+     */
+    public static Set<Class<?>> getClassSet(Set<Class<?>> classSet, Class<? extends Annotation> aClass) {
+        Set<Class<?>> anClassSet = new HashSet<>();
+        if (classSet != null) {
+            for (Class<?> aClass1 : classSet) {
+                if (aClass1.isAnnotationPresent(aClass)) {
+                    anClassSet.add(aClass1);
+                }
+            }
+        }
+        return anClassSet;
     }
 }
