@@ -12,7 +12,7 @@ public class ConfigHelper {
     /**
      * 配置文件名
      */
-    private static final String CONFIG_FILE = "smart.config";
+    private static final String CONFIG_FILE = "smart.properties";
     /**
      * jdbc驱动
      */

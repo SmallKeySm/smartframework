@@ -32,7 +32,7 @@ public final class ClassHelper {
      */
     public static Set<Class<?>> getClassSet(Class<? extends Annotation> aClass){
         Set<Class<?>> classSet = new HashSet<>();
-        for (Class<?> aClass1 : classSet){
+        for (Class<?> aClass1 : CLASS_SET){
             if (aClass1.isAnnotationPresent(aClass)){
                 classSet.add(aClass1);
             }
@@ -51,4 +51,19 @@ public final class ClassHelper {
         return classSet;
     }
 
+
+    /**
+     * 获取应用包名下某父类（或接口）所有子类（或实现类）
+     * @param superClass
+     * @return
+     */
+    public static Set<Class<?>> getClassSetBySuper(Class<?> superClass){
+        Set<Class<?>> classSet = new HashSet<>();
+        for (Class<?> aClass : CLASS_SET){
+            if (superClass.isAssignableFrom(aClass) && !superClass.equals(aClass)){
+                classSet.add(aClass);
+            }
+        }
+        return classSet;
+    }
 }
