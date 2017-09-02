@@ -109,4 +109,46 @@ public class DatabaseHelper {
         }
         return entity;
     }
+
+    public static void beginTransaction(){
+        Connection connection = getConnection();
+        if (connection != null){
+            try {
+                connection.setAutoCommit(false);
+            } catch (SQLException e) {
+                logger.error("开始事务异常", e);
+                throw new RuntimeException(e);
+            } finally {
+                CONNECTION_THREAD_LOCAL.set(connection);
+            }
+        }
+    }
+
+    public static void commitTransaction(){
+        Connection connection = getConnection();
+        if (connection != null){
+            try {
+                connection.commit();
+                connection.close();
+            } catch (SQLException e) {
+                logger.error("提交事务异常", e);
+                throw new RuntimeException(e);
+            } finally {
+                CONNECTION_THREAD_LOCAL.remove();
+            }
+        }
+    }
+
+    public static void rollbackTransaction(){
+        Connection connection = getConnection();
+        if (connection != null){
+            try {
+                connection.rollback();
+            } catch (SQLException e) {
+                logger.error("事务回滚异常", e);
+            } finally {
+                CONNECTION_THREAD_LOCAL.remove();
+            }
+        }
+    }
 }

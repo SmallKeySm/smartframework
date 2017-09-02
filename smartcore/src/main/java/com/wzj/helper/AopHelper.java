@@ -1,9 +1,12 @@
 package com.wzj.helper;
 
 import com.wzj.annotation.Aspect;
+import com.wzj.annotation.Service;
+import com.wzj.cache.CacheProxy;
 import com.wzj.proxy.AspectProxy;
 import com.wzj.proxy.Proxy;
 import com.wzj.proxy.ProxyManager;
+import com.wzj.transaction.TransactionProxy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,20 +50,49 @@ public class AopHelper {
     }
 
     /**
+     * 添加普通代理类
+     * @param proxyMap
+     * @throws Exception
+     */
+    private static void addAspectProxy(Map<Class<?>, Set<Class<?>>> proxyMap) throws Exception{
+        Set<Class<?>> proxyClassSet = ClassHelper.getClassSetBySuper(AspectProxy.class);
+        for (Class<?> proxyClass : proxyClassSet){
+            if (proxyClass.isAnnotationPresent(Aspect.class)){
+                Aspect aspect = proxyClass.getAnnotation(Aspect.class);
+                Set<Class<?>> targetClassSet = createTargetClassSet(aspect);
+                proxyMap.put(proxyClass, targetClassSet);
+            }
+        }
+    }
+
+    /**
+     * 添加事务代理类
+     * @param proxyMap
+     */
+    private static void addTransactionProxy(Map<Class<?>, Set<Class<?>>> proxyMap){
+        Set<Class<?>> serviceClassSet = ClassHelper.getClassSetBySuper(Service.class);
+        proxyMap.put(TransactionProxy.class, serviceClassSet);
+    }
+
+    /**
+     * 添加缓存代理
+     * @param proxyMap
+     */
+    private static void addCacheProxy(Map<Class<?>, Set<Class<?>>> proxyMap){
+        Set<Class<?>> serviceClassSet = ClassHelper.getClassSetByAnnoation(Service.class);
+        proxyMap.put(CacheProxy.class, serviceClassSet);
+    }
+
+    /**
      * 切面类与目标类映射关系
      * @return
      * @throws Exception
      */
     public static Map<Class<?>, Set<Class<?>>> createProxyMap() throws Exception{
         Map<Class<?>, Set<Class<?>>> proxyClassMap = new HashMap<>();
-        Set<Class<?>> proxyClassSet = ClassHelper.getClassSetBySuper(AspectProxy.class);
-        for (Class<?> proxyClass : proxyClassSet){
-            if (proxyClass.isAnnotationPresent(Aspect.class)){
-                Aspect aspect = proxyClass.getAnnotation(Aspect.class);
-                Set<Class<?>> targetClassSet = createTargetClassSet(aspect);
-                proxyClassMap.put(proxyClass, targetClassSet);
-            }
-        }
+        addAspectProxy(proxyClassMap);
+//        addTransactionProxy(proxyClassMap);
+        addCacheProxy(proxyClassMap);
         return proxyClassMap;
     }
 

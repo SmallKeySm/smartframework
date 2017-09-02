@@ -66,4 +66,19 @@ public final class ClassHelper {
         }
         return classSet;
     }
+
+    /**
+     * 获取应用包下标注了指定的注解的所有类
+     * @param annotation
+     * @return
+     */
+    public static Set<Class<?>> getClassSetByAnnoation(Class<? extends Annotation> annotation){
+        Set<Class<?>> classSet = new HashSet<>();
+        for (Class<?> aClass : CLASS_SET){
+            if (aClass.isAnnotationPresent(annotation) && !aClass.equals(annotation)){
+                classSet.add(aClass);
+            }
+        }
+        return classSet;
+    }
 }
